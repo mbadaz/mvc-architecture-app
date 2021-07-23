@@ -1,11 +1,11 @@
-package com.mambure.mvcapp;
+package com.mambure.mvcapp.screens.common.mvcview;
 
 import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.StringRes;
 
-public abstract class BaseViewMvc implements ViewMvc {
+public abstract class BaseMvcView implements MvcView {
     
     private View mRootView;
 

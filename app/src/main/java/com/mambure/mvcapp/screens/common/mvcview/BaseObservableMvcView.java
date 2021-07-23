@@ -1,11 +1,11 @@
-package com.mambure.mvcapp;
+package com.mambure.mvcapp.screens.common.mvcview;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class BaseObservableViewMvc<OBSERVER> extends BaseViewMvc
-        implements ObservableViewMvc<OBSERVER> {
+public abstract class BaseObservableMvcView<OBSERVER> extends BaseMvcView
+        implements ObservableMvcView<OBSERVER> {
 
     private final Set<OBSERVER> mObservers = new HashSet<>();
 
