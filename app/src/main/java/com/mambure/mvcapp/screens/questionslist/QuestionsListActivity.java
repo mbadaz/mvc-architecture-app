@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.GetQuestionsUseCase;
 import com.mambure.mvcapp.questions.Question;
+import com.mambure.mvcapp.screens.common.MvcViewFactory;
 import com.mambure.mvcapp.screens.questiondetail.QuestionDetailActivity;
 
 import java.util.List;
@@ -18,16 +19,18 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class QuestionsListActivity extends AppCompatActivity implements
-        QuestionsListMvcView.Listener, GetQuestionsUseCase.Listener {
+        QuestionsListMvcViewImpl.Listener, GetQuestionsUseCase.Listener {
 
     @Inject
     GetQuestionsUseCase getQuestionsUseCase;
+    @Inject
+    MvcViewFactory mvcViewFactory;
     private QuestionsListMvcView questionsListMvcView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        questionsListMvcView = new QuestionsListMvcView(getLayoutInflater(), null);
+        questionsListMvcView = mvcViewFactory.getQuestionsListMvcView(null);
         setContentView(questionsListMvcView.getRootView());
     }
 

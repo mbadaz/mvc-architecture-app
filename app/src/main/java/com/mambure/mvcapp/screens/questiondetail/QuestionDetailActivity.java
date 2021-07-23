@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.GetQuestionDetailUseCase;
 import com.mambure.mvcapp.questions.QuestionDetail;
+import com.mambure.mvcapp.screens.common.MvcViewFactory;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +24,8 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
 
     @Inject
     GetQuestionDetailUseCase getQuestionDetailUseCase;
+    @Inject
+    MvcViewFactory mvcViewFactory;
     private QuestionDetailMvcView questionDetailMvcView;
     private int questionId;
 
@@ -35,7 +38,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        questionDetailMvcView = new QuestionDetailMvcView(getLayoutInflater(), null);
+        questionDetailMvcView = mvcViewFactory.getQuestionDetailMvcView(null);
         setContentView(questionDetailMvcView.getRootView());
         if (savedInstanceState != null) {
             questionId = savedInstanceState.getInt(QUESTION_ID, -1);
