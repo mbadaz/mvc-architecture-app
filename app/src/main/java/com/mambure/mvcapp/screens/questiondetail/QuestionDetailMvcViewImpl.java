@@ -23,10 +23,10 @@ public class QuestionDetailMvcViewImpl extends QuestionDetailMvcView {
     public QuestionDetailMvcViewImpl(LayoutInflater inflater, ViewGroup parent) {
         View rootView = inflater.inflate(R.layout.activity_question_detail, parent, false);
         setRootView(rootView);
-        txtTitle = rootView.findViewById(R.id.txtTitle);
-        txtDate = rootView.findViewById(R.id.txtDate);
-        txtBody = rootView.findViewById(R.id.txtBody);
-        progressBar = rootView.findViewById(R.id.progressBar2);
+        txtTitle = findViewById(R.id.txtTitle);
+        txtDate = findViewById(R.id.txtDate);
+        txtBody = findViewById(R.id.txtBody);
+        progressBar = findViewById(R.id.progressBar2);
     }
 
     @Override

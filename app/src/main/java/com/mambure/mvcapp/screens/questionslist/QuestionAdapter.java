@@ -1,25 +1,28 @@
 package com.mambure.mvcapp.screens.questionslist;
 
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mambure.mvcapp.questions.Question;
+import com.mambure.mvcapp.screens.common.MvcViewFactory;
 import com.mambure.mvcapp.screens.questionslist.questionlistitem.QuestionListItemMvcView;
+import com.mambure.mvcapp.screens.questionslist.questionlistitem.QuestionListItemMvcViewImpl;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> implements QuestionListItemMvcView.Listener {
+public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> implements QuestionListItemMvcViewImpl.Listener {
     private final List<Question> list;
     private final OnItemClickListener onItemClickListener;
+    private final MvcViewFactory mvcViewFactory;
 
-    public QuestionAdapter(OnItemClickListener onItemClickListener) {
+    public QuestionAdapter(OnItemClickListener onItemClickListener, MvcViewFactory mvcViewFactory) {
         this.list = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
+        this.mvcViewFactory = mvcViewFactory;
     }
 
     public void addData(List<Question> items) {
@@ -49,9 +52,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        QuestionListItemMvcView questionListItemMvcView = new QuestionListItemMvcView(
-                LayoutInflater.from(parent.getContext()), parent
-        );
+        QuestionListItemMvcView questionListItemMvcView = mvcViewFactory.getQuestionListItemMvcView(parent);
         questionListItemMvcView.registerListener(this);
         return new ViewHolder(questionListItemMvcView);
     }

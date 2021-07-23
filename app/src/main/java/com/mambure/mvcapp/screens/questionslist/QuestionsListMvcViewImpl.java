@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.Question;
+import com.mambure.mvcapp.screens.common.MvcViewFactory;
 
 import java.util.List;
 
@@ -17,12 +18,12 @@ public class QuestionsListMvcViewImpl extends QuestionsListMvcView implements Qu
     private final QuestionAdapter questionAdapter;
     private final ProgressBar progressBar;
 
-    public QuestionsListMvcViewImpl(LayoutInflater inflater, ViewGroup parent) {
+    public QuestionsListMvcViewImpl(LayoutInflater inflater, ViewGroup parent, MvcViewFactory mvcViewFactory) {
         View rootView = inflater.inflate(R.layout.activity_questions_list, parent, false);
         setRootView(rootView);
-        RecyclerView recyclerView = rootView.findViewById(R.id.rv_questions_list);
-        questionAdapter = new QuestionAdapter(this);
-        progressBar = rootView.findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
+        RecyclerView recyclerView = findViewById(R.id.rv_questions_list);
+        questionAdapter = new QuestionAdapter(this, mvcViewFactory);
         recyclerView.setAdapter(questionAdapter);
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(recyclerView.getContext(), RecyclerView.VERTICAL));
