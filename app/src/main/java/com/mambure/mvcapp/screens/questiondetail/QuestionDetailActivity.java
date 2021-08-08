@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.GetQuestionDetailUseCase;
 import com.mambure.mvcapp.questions.QuestionDetail;
-import com.mambure.mvcapp.screens.common.MvcViewFactory;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,10 +22,9 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     public static final String QUESTION_ID = "question_id";
 
     @Inject
-    GetQuestionDetailUseCase getQuestionDetailUseCase;
-    @Inject
-    MvcViewFactory mvcViewFactory;
-    private QuestionDetailMvcView questionDetailMvcView;
+    GetQuestionDetailUseCase mGetQuestionDetailUseCase;
+
+    private QuestionDetailMvcViewImpl mQuestionDetailMvcViewImpl;
     private int questionId;
 
     public static void launch(AppCompatActivity caller, int questionId) {
@@ -38,8 +36,8 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        questionDetailMvcView = mvcViewFactory.getQuestionDetailMvcView(null);
-        setContentView(questionDetailMvcView.getRootView());
+        mQuestionDetailMvcViewImpl = new QuestionDetailMvcViewImpl(getLayoutInflater(), null);
+        setContentView(mQuestionDetailMvcViewImpl.getRootView());
         if (savedInstanceState != null) {
             questionId = savedInstanceState.getInt(QUESTION_ID, -1);
         } else {
@@ -53,20 +51,20 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     @Override
     protected void onStart() {
         super.onStart();
-        getQuestionDetailUseCase.registerListener(this);
-        getQuestionDetailUseCase.getQuestionDetail(questionId);
-        questionDetailMvcView.showProgressBar();
+        mGetQuestionDetailUseCase.registerListener(this);
+        mGetQuestionDetailUseCase.getQuestionDetail(questionId);
+        mQuestionDetailMvcViewImpl.showProgressBar();
     }
 
     @Override
     public void onQuestionDetailFetched(QuestionDetail questionDetail) {
-        questionDetailMvcView.hideProgressBar();
-        questionDetailMvcView.bindQuestionDetail(questionDetail);
+        mQuestionDetailMvcViewImpl.hideProgressBar();
+        mQuestionDetailMvcViewImpl.bindQuestionDetail(questionDetail);
     }
 
     @Override
     public void onQuestionDetailFetchError() {
-        questionDetailMvcView.hideProgressBar();
+        mQuestionDetailMvcViewImpl.hideProgressBar();
         Toast.makeText(this, R.string.an_error_occurred, Toast.LENGTH_SHORT)
                 .show();
     }
@@ -79,7 +77,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
 
     @Override
     protected void onStop() {
-        getQuestionDetailUseCase.unregisterListener(this);
+        mGetQuestionDetailUseCase.unregisterListener(this);
         super.onStop();
     }
 }

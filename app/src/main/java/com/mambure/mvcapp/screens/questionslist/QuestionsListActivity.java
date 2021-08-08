@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.GetQuestionsUseCase;
 import com.mambure.mvcapp.questions.Question;
-import com.mambure.mvcapp.screens.common.MvcViewFactory;
 import com.mambure.mvcapp.screens.questiondetail.QuestionDetailActivity;
 
 import java.util.List;
@@ -19,39 +18,37 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class QuestionsListActivity extends AppCompatActivity implements
-        QuestionsListMvcViewImpl.Listener, GetQuestionsUseCase.Listener {
+        QuestionsListMvcViewImpl.QuestionsListViewListener, GetQuestionsUseCase.Listener {
 
     @Inject
     GetQuestionsUseCase getQuestionsUseCase;
-    @Inject
-    MvcViewFactory mvcViewFactory;
-    private QuestionsListMvcView questionsListMvcView;
+    private QuestionsListMvcViewImpl mQuestionsListViewImpl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        questionsListMvcView = mvcViewFactory.getQuestionsListMvcView(null);
-        setContentView(questionsListMvcView.getRootView());
+        mQuestionsListViewImpl = new QuestionsListMvcViewImpl(getLayoutInflater(), null);
+        setContentView(mQuestionsListViewImpl.getRootView());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        questionsListMvcView.registerListener(this);
+        mQuestionsListViewImpl.registerListener(this);
         getQuestionsUseCase.registerListener(this);
-        questionsListMvcView.showProgressBar();
+        mQuestionsListViewImpl.showProgressBar();
         getQuestionsUseCase.getQuestions();
     }
 
     @Override
     public void onQuestionsFetched(List<Question> questions) {
-        questionsListMvcView.hideProgressBar();
-        questionsListMvcView.bindQuestions(questions);
+        mQuestionsListViewImpl.hideProgressBar();
+        mQuestionsListViewImpl.bindQuestions(questions);
     }
 
     @Override
     public void onQuestionsFetchError() {
-        questionsListMvcView.hideProgressBar();
+        mQuestionsListViewImpl.hideProgressBar();
         Toast.makeText(this, R.string.an_error_occurred, Toast.LENGTH_SHORT)
                 .show();
     }
@@ -63,7 +60,7 @@ public class QuestionsListActivity extends AppCompatActivity implements
 
     @Override
     protected void onStop() {
-        questionsListMvcView.unregisterListener(this);
+        mQuestionsListViewImpl.unregisterListener(this);
         getQuestionsUseCase.unregisterListener(this);
         super.onStop();
     }
