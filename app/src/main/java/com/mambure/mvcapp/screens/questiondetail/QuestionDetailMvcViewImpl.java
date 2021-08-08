@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.core.text.HtmlCompat;
 
 import com.mambure.mvcapp.R;
-import com.mambure.mvcapp.questions.Question;
 import com.mambure.mvcapp.questions.QuestionDetail;
 
 import java.text.DateFormat;
@@ -52,9 +51,5 @@ public class QuestionDetailMvcViewImpl {
 
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
-    }
-
-    interface Listener {
-        void onQuestionClicked(Question item);
     }
 }
