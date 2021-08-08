@@ -21,7 +21,7 @@ public class QuestionsListActivity extends AppCompatActivity implements
         QuestionsListMvcViewImpl.QuestionsListViewListener, GetQuestionsUseCase.Listener {
 
     @Inject
-    GetQuestionsUseCase getQuestionsUseCase;
+    GetQuestionsUseCase mGetQuestionsUseCase;
     private QuestionsListMvcViewImpl mQuestionsListViewImpl;
 
     @Override
@@ -35,9 +35,9 @@ public class QuestionsListActivity extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
         mQuestionsListViewImpl.registerListener(this);
-        getQuestionsUseCase.registerListener(this);
+        mGetQuestionsUseCase.registerListener(this);
         mQuestionsListViewImpl.showProgressBar();
-        getQuestionsUseCase.getQuestions();
+        mGetQuestionsUseCase.getQuestions();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class QuestionsListActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         mQuestionsListViewImpl.unregisterListener(this);
-        getQuestionsUseCase.unregisterListener(this);
+        mGetQuestionsUseCase.unregisterListener(this);
         super.onStop();
     }
 }
