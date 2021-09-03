@@ -18,37 +18,37 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class QuestionsListActivity extends AppCompatActivity implements
-        QuestionsListMvcViewImpl.QuestionsListViewListener, GetQuestionsUseCase.Listener {
+        QuestionsListMvcView.QuestionsListViewListener, GetQuestionsUseCase.Listener {
 
     @Inject
     GetQuestionsUseCase mGetQuestionsUseCase;
-    private QuestionsListMvcViewImpl mQuestionsListViewImpl;
+    private QuestionsListMvcView mQuestionsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mQuestionsListViewImpl = new QuestionsListMvcViewImpl(getLayoutInflater(), null);
-        setContentView(mQuestionsListViewImpl.getRootView());
+        mQuestionsListView = new QuestionsListMvcViewImpl(getLayoutInflater(), null);
+        setContentView(mQuestionsListView.getRootView());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mQuestionsListViewImpl.registerListener(this);
+        mQuestionsListView.registerListener(this);
         mGetQuestionsUseCase.registerListener(this);
-        mQuestionsListViewImpl.showProgressBar();
+        mQuestionsListView.showProgressBar();
         mGetQuestionsUseCase.getQuestions();
     }
 
     @Override
     public void onQuestionsFetched(List<Question> questions) {
-        mQuestionsListViewImpl.hideProgressBar();
-        mQuestionsListViewImpl.bindQuestions(questions);
+        mQuestionsListView.hideProgressBar();
+        mQuestionsListView.bindQuestions(questions);
     }
 
     @Override
     public void onQuestionsFetchError() {
-        mQuestionsListViewImpl.hideProgressBar();
+        mQuestionsListView.hideProgressBar();
         Toast.makeText(this, R.string.an_error_occurred, Toast.LENGTH_SHORT)
                 .show();
     }
@@ -60,7 +60,7 @@ public class QuestionsListActivity extends AppCompatActivity implements
 
     @Override
     protected void onStop() {
-        mQuestionsListViewImpl.unregisterListener(this);
+        mQuestionsListView.unregisterListener(this);
         mGetQuestionsUseCase.unregisterListener(this);
         super.onStop();
     }

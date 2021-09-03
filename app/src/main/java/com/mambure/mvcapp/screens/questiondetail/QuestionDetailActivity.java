@@ -24,7 +24,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     @Inject
     GetQuestionDetailUseCase mGetQuestionDetailUseCase;
 
-    private QuestionDetailMvcViewImpl mQuestionDetailMvcViewImpl;
+    private QuestionDetailMvcView mQuestionDetailMvcView;
     private int questionId;
 
     public static void launch(AppCompatActivity caller, int questionId) {
@@ -36,8 +36,8 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mQuestionDetailMvcViewImpl = new QuestionDetailMvcViewImpl(getLayoutInflater(), null);
-        setContentView(mQuestionDetailMvcViewImpl.getRootView());
+        mQuestionDetailMvcView = new QuestionDetailMvcViewImpl(getLayoutInflater(), null);
+        setContentView(mQuestionDetailMvcView.getRootView());
         if (savedInstanceState != null) {
             questionId = savedInstanceState.getInt(QUESTION_ID, -1);
         } else {
@@ -53,18 +53,18 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
         super.onStart();
         mGetQuestionDetailUseCase.registerListener(this);
         mGetQuestionDetailUseCase.getQuestionDetail(questionId);
-        mQuestionDetailMvcViewImpl.showProgressBar();
+        mQuestionDetailMvcView.showProgressBar();
     }
 
     @Override
     public void onQuestionDetailFetched(QuestionDetail questionDetail) {
-        mQuestionDetailMvcViewImpl.hideProgressBar();
-        mQuestionDetailMvcViewImpl.bindQuestionDetail(questionDetail);
+        mQuestionDetailMvcView.hideProgressBar();
+        mQuestionDetailMvcView.bindQuestionDetail(questionDetail);
     }
 
     @Override
     public void onQuestionDetailFetchError() {
-        mQuestionDetailMvcViewImpl.hideProgressBar();
+        mQuestionDetailMvcView.hideProgressBar();
         Toast.makeText(this, R.string.an_error_occurred, Toast.LENGTH_SHORT)
                 .show();
     }

@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mambure.mvcapp.R;
-import com.mambure.mvcapp.common.MyObservable;
 import com.mambure.mvcapp.questions.Question;
 
 import java.util.List;
 
-public class QuestionsListMvcViewImpl extends MyObservable<QuestionsListMvcViewImpl.QuestionsListViewListener> implements QuestionAdapter.OnItemClickListener {
+public class QuestionsListMvcViewImpl extends QuestionsListMvcView implements QuestionAdapter.OnItemClickListener {
     private final QuestionAdapter questionAdapter;
     private final ProgressBar progressBar;
     private final View rootView;
@@ -33,18 +32,22 @@ public class QuestionsListMvcViewImpl extends MyObservable<QuestionsListMvcViewI
         return rootView.findViewById(viewId);
     }
 
+    @Override
     public View getRootView() {
         return rootView;
     }
 
+    @Override
     public void bindQuestions(List<Question> questions) {
         questionAdapter.addData(questions);
     }
 
+    @Override
     public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
+    @Override
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
     }
@@ -54,10 +57,6 @@ public class QuestionsListMvcViewImpl extends MyObservable<QuestionsListMvcViewI
         for (QuestionsListViewListener questionsListViewListener : getListeners()) {
             questionsListViewListener.onQuestionClicked(item);
         }
-    }
-
-    interface QuestionsListViewListener {
-        void onQuestionClicked(Question item);
     }
 
 }
