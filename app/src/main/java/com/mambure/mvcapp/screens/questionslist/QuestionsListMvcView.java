@@ -1,15 +1,11 @@
 package com.mambure.mvcapp.screens.questionslist;
 
-import android.view.View;
-
-import com.mambure.mvcapp.common.MyObservable;
 import com.mambure.mvcapp.questions.Question;
+import com.mambure.mvcapp.screens.common.mvcview.BaseObservableMvcView;
 
 import java.util.List;
 
-public abstract class QuestionsListMvcView extends MyObservable<QuestionsListMvcView.QuestionsListViewListener> {
-
-    public abstract View getRootView();
+public abstract class QuestionsListMvcView extends BaseObservableMvcView<QuestionsListMvcView.QuestionsListViewListener> {
 
     public abstract void bindQuestions(List<Question> questions);
 

@@ -19,23 +19,14 @@ public class QuestionDetailMvcViewImpl extends QuestionDetailMvcView {
     private final TextView txtDate;
     private final TextView txtBody;
     private final ProgressBar progressBar;
-    private final View rootView;
 
     public QuestionDetailMvcViewImpl(LayoutInflater inflater, ViewGroup parent) {
-        rootView = inflater.inflate(R.layout.activity_question_detail, parent, false);
+        View rootView = inflater.inflate(R.layout.activity_question_detail, parent, false);
+        setRootView(rootView);
         txtTitle = rootView.findViewById(R.id.txtTitle);
         txtDate = findViewById(R.id.txtDate);
         txtBody = findViewById(R.id.txtBody);
         progressBar = findViewById(R.id.progressBar2);
-    }
-
-    private  <T extends View> T findViewById(int viewId) {
-        return rootView.findViewById(viewId);
-    }
-
-    @Override
-    public View getRootView() {
-        return rootView;
     }
 
     @Override
