@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.GetQuestionDetailUseCase;
 import com.mambure.mvcapp.questions.QuestionDetail;
+import com.mambure.mvcapp.screens.common.MvcViewFactory;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,13 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class QuestionDetailActivity extends AppCompatActivity implements GetQuestionDetailUseCase.Listener {
-    public static final String QUESTION_ID = "question_id";
-
-    @Inject
-    GetQuestionDetailUseCase mGetQuestionDetailUseCase;
-
-    private QuestionDetailMvcView mQuestionDetailMvcView;
-    private int questionId;
+    private static final String QUESTION_ID = "question_id";
 
     public static void launch(AppCompatActivity caller, int questionId) {
         Intent intent = new Intent(caller, QuestionDetailActivity.class);
@@ -33,10 +28,17 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
         caller.startActivity(intent);
     }
 
+    @Inject
+    GetQuestionDetailUseCase mGetQuestionDetailUseCase;
+    @Inject
+    MvcViewFactory mMvcViewFactory;
+    private QuestionDetailMvcView mQuestionDetailMvcView;
+    private int questionId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mQuestionDetailMvcView = new QuestionDetailMvcViewImpl(getLayoutInflater(), null);
+        mQuestionDetailMvcView = mMvcViewFactory.getQuestionDetailsMvcView(null);
         setContentView(mQuestionDetailMvcView.getRootView());
         if (savedInstanceState != null) {
             questionId = savedInstanceState.getInt(QUESTION_ID, -1);

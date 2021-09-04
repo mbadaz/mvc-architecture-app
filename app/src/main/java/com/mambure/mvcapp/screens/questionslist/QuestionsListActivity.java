@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.GetQuestionsUseCase;
 import com.mambure.mvcapp.questions.Question;
+import com.mambure.mvcapp.screens.common.MvcViewFactory;
 import com.mambure.mvcapp.screens.questiondetail.QuestionDetailActivity;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class QuestionsListActivity extends AppCompatActivity implements
 
     @Inject
     GetQuestionsUseCase mGetQuestionsUseCase;
+    @Inject
+    MvcViewFactory mMvcViewFactory;
     private QuestionsListMvcView mQuestionsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mQuestionsListView = new QuestionsListMvcViewImpl(getLayoutInflater(), null);
+        mQuestionsListView = mMvcViewFactory.getQuestionsListMvcView(null);
         setContentView(mQuestionsListView.getRootView());
     }
 
