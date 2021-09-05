@@ -7,6 +7,8 @@ import com.mambure.mvcapp.screens.questiondetail.QuestionDetailMvcView;
 import com.mambure.mvcapp.screens.questiondetail.QuestionDetailMvcViewImpl;
 import com.mambure.mvcapp.screens.questionslist.QuestionsListMvcView;
 import com.mambure.mvcapp.screens.questionslist.QuestionsListMvcViewImpl;
+import com.mambure.mvcapp.screens.questionslist.questionslistitem.QuestionsListItemMvcView;
+import com.mambure.mvcapp.screens.questionslist.questionslistitem.QuestionsListItemMvcViewImpl;
 
 public class MvcViewFactory {
 
@@ -17,10 +19,14 @@ public class MvcViewFactory {
     }
 
     public QuestionsListMvcView getQuestionsListMvcView(ViewGroup parent) {
-        return new QuestionsListMvcViewImpl(mLayoutInflater, parent);
+        return new QuestionsListMvcViewImpl(mLayoutInflater, parent, this);
     }
 
     public QuestionDetailMvcView getQuestionDetailsMvcView(ViewGroup parent) {
         return new QuestionDetailMvcViewImpl(mLayoutInflater, parent);
+    }
+
+    public QuestionsListItemMvcView getQuestionListItemMvcView(ViewGroup parent) {
+        return new QuestionsListItemMvcViewImpl(mLayoutInflater, parent);
     }
 }

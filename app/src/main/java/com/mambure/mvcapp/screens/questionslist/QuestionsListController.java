@@ -30,7 +30,7 @@ public class QuestionsListController  implements QuestionsListMvcView.QuestionsL
         this.mQuestionsListMvcView = questionsListMvcView;
     }
 
-    protected void executeOnStart() {
+    public void executeOnStart() {
         mQuestionsListMvcView .registerListener(this);
         mGetQuestionsUseCase.registerListener(this);
         mQuestionsListMvcView .showProgressBar();

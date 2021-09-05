@@ -1,27 +1,28 @@
 package com.mambure.mvcapp.screens.questionslist;
 
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.Question;
+import com.mambure.mvcapp.screens.common.MvcViewFactory;
+import com.mambure.mvcapp.screens.questionslist.questionslistitem.QuestionsListItemMvcView;
+import com.mambure.mvcapp.screens.questionslist.questionslistitem.QuestionsListItemMvcView.QuestionListItemListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
+public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> implements QuestionListItemListener {
     private final List<Question> list;
     private final OnItemClickListener onItemClickListener;
+    private final MvcViewFactory mvcViewFactory;
 
-    public QuestionAdapter(OnItemClickListener onItemClickListener) {
+    public QuestionAdapter(OnItemClickListener onItemClickListener, MvcViewFactory mvcViewFactory) {
         this.list = new ArrayList<>();
         this.onItemClickListener = onItemClickListener;
+        this.mvcViewFactory = mvcViewFactory;
     }
 
     public void addData(List<Question> items) {
@@ -31,41 +32,40 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView title;
-        private final TextView tags;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.txtTitle);
-            tags = itemView.findViewById(R.id.txtTopics);
-
+        QuestionsListItemMvcView questionListItemMvcView;
+        public ViewHolder(QuestionsListItemMvcView questionListItemMvcView) {
+            super(questionListItemMvcView.getRootView());
+            this.questionListItemMvcView = questionListItemMvcView;
         }
 
-        public void bind(final Question question, OnItemClickListener onItemClickListener) {
-            title.setText(question.getTitle());
-            tags.setText(question.getTags().toString());
-            itemView.setOnClickListener(v -> onItemClickListener.onItemClick(question));
+        public void bind(final Question question) {
+            questionListItemMvcView.bindQuestion(question);
         }
+
     }
-
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.
-                from(parent.getContext()).
-                inflate(R.layout.item_questions_list, parent, false);
-        return new ViewHolder(view);
+        QuestionsListItemMvcView questionListItemMvcView = mvcViewFactory.getQuestionListItemMvcView(parent);
+        questionListItemMvcView.registerListener(this);
+        return new ViewHolder(questionListItemMvcView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Question item = list.get(position);
-        holder.bind(item, onItemClickListener);
+        holder.bind(item);
     }
 
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public void onItemClicked(Question question) {
+        onItemClickListener.onItemClick(question);
     }
 
     public interface OnItemClickListener {
