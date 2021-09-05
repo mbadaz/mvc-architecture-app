@@ -1,5 +1,6 @@
 package com.mambure.mvcapp.screens.questiondetail;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.GetQuestionDetailUseCase;
 import com.mambure.mvcapp.questions.QuestionDetail;
 import com.mambure.mvcapp.screens.common.MvcViewFactory;
+import com.mambure.mvcapp.screens.common.ToastManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class QuestionDetailActivity extends AppCompatActivity implements GetQuestionDetailUseCase.Listener {
     private static final String QUESTION_ID = "question_id";
 
-    public static void launch(AppCompatActivity caller, int questionId) {
+    public static void launch(Activity caller, int questionId) {
         Intent intent = new Intent(caller, QuestionDetailActivity.class);
         intent.putExtra(QUESTION_ID, questionId);
         caller.startActivity(intent);
@@ -32,6 +34,8 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     GetQuestionDetailUseCase mGetQuestionDetailUseCase;
     @Inject
     MvcViewFactory mMvcViewFactory;
+    @Inject
+    ToastManager mToastManager
     private QuestionDetailMvcView mQuestionDetailMvcView;
     private int questionId;
 
@@ -67,8 +71,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     @Override
     public void onQuestionDetailFetchError() {
         mQuestionDetailMvcView.hideProgressBar();
-        Toast.makeText(this, R.string.an_error_occurred, Toast.LENGTH_SHORT)
-                .show();
+        mToastManager.showErrorOccurredMessage();
     }
 
     @Override
