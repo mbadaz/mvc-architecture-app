@@ -3,12 +3,10 @@ package com.mambure.mvcapp.screens.questiondetail;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mambure.mvcapp.R;
 import com.mambure.mvcapp.questions.GetQuestionDetailUseCase;
 import com.mambure.mvcapp.questions.QuestionDetail;
 import com.mambure.mvcapp.screens.common.MvcViewFactory;
@@ -35,7 +33,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements GetQues
     @Inject
     MvcViewFactory mMvcViewFactory;
     @Inject
-    ToastManager mToastManager
+    ToastManager mToastManager;
     private QuestionDetailMvcView mQuestionDetailMvcView;
     private int questionId;
 
